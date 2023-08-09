@@ -1,0 +1,30 @@
+### create author
+POST http://localhost:8080/api/author
+Content-Type: application/json
+
+{
+  "id": null,
+  "first_name": "Roald",
+  "last_name": "Dahl",
+  "birthday": "1916-09-16T00:00:00.000000"
+}
+
+### find author by first name
+GET http://localhost:8080/api/author/filter/Roald
+
+### delete author with id 1
+DELETE http://localhost:8080/api/author/1
+
+
+
+### create a new book
+POST http://localhost:8080/api/book
+Content-Type: application/json
+
+{
+  "id": 2,
+  "title": "j",
+  "descr": "My second blog post",
+  "author": 1,
+  "price": 5
+}

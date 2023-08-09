@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS Author(
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    birthday TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS Book (
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255),
+    descr VARCHAR(255),
+    author INTEGER,
+    price INTEGER,
+
+    FOREIGN KEY(author) REFERENCES Author(id)
+);
