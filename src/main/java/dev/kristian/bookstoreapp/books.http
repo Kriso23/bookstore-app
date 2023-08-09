@@ -15,16 +15,29 @@ GET http://localhost:8080/api/author/filter/Roald
 ### delete author with id 1
 DELETE http://localhost:8080/api/author/1
 
-
+### get all books
+GET http://localhost:8080/api/book
 
 ### create a new book
 POST http://localhost:8080/api/book
 Content-Type: application/json
 
 {
-  "id": 2,
-  "title": "j",
-  "descr": "My second blog post",
+  "id": null,
+  "title": "Matilda",
+  "descr": "The story features Matilda Wormwood, a girl with 2 horrible parents.",
+  "author": 1,
+  "price": 5
+}
+
+### update a book
+PUT http://localhost:8080/api/book/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "Matilda",
+  "descr": "no desc",
   "author": 1,
   "price": 5
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import dev.kristian.bookstoreapp.model.Book;
+
 import dev.kristian.bookstoreapp.repository.BookRepository;
 
 import jakarta.validation.Valid;
@@ -28,8 +29,11 @@ public class BookController {
     
     private final BookRepository repository;
 
-    public BookController(BookRepository repository) {
+    private final AuthorController authorController;
+
+    public BookController(BookRepository repository, AuthorController authorController) {
         this.repository = repository;
+        this.authorController = authorController;
     }
 
     //when trying to find all the books
@@ -50,6 +54,9 @@ public class BookController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
     public void create(@Valid @RequestBody Book book) {
+        if(authorController.findById(book.author()) == null){ //preserving database fk integrity
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found, create author first.");
+        }
         repository.save(book);
     }
 
@@ -64,8 +71,8 @@ public class BookController {
     @ResponseStatus(HttpStatus.NO_CONTENT) //returning as a confirmation that no new book was created
     @PutMapping("/{id}")
     public void update(@RequestBody Book book, @PathVariable Integer id) {
-        if(!repository.existsById(id)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found");
+        if(!repository.existsById(id) || authorController.findById(book.author()) == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book/Author not found");
         }
         repository.save(book);
     }
