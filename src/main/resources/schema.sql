@@ -12,5 +12,5 @@ CREATE TABLE IF NOT EXISTS Book (
     author INTEGER,
     price INTEGER,
 
-    FOREIGN KEY(author) REFERENCES Author(id)
+    CONSTRAINT fk_author FOREIGN KEY (author) REFERENCES Author(id)
 );
