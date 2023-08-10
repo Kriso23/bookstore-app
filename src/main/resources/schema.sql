@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS Book (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255),
     descr VARCHAR(255),
-    author INTEGER,
+    author INTEGER NOT NULL,
     price INTEGER,
 
     CONSTRAINT fk_author FOREIGN KEY (author) REFERENCES Author(id)

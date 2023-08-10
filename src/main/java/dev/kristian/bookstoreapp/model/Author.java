@@ -12,6 +12,6 @@ public record Author(
     String last_name,
     LocalDateTime birthday
 
-) 
-{
+) {
+    
 }
