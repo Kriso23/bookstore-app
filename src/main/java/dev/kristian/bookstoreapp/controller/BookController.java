@@ -26,64 +26,64 @@ import jakarta.validation.Valid;
 @CrossOrigin //disables security (browser feature) over using same port
 
 public class BookController {
-    
-    private final BookRepository repository;
+	
+	private final BookRepository repository;
 
-    private final AuthorController authorController;
+	private final AuthorController authorController;
 
-    public BookController(BookRepository repository, AuthorController authorController) {
-        this.repository = repository;
-        this.authorController = authorController;
-    }
+	public BookController(BookRepository repository, AuthorController authorController) {
+		this.repository = repository;
+		this.authorController = authorController;
+	}
 
-    //when trying to find all the books
-    @GetMapping("")
-    public List<Book> findAll() {
-        return repository.findAll();
-    }
+	//when trying to find all the books
+	@GetMapping("")
+	public List<Book> findAll() {
+		return repository.findAll();
+	}
 
-    //finding by specific id
-    @GetMapping("/{id}")
-    public Book findById(@PathVariable Integer id){
-        return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Content not found"));
-    }
-
-
-    /* CRUD OPERATIONS HERE */
-    
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("")
-    public void create(@Valid @RequestBody Book book) {
-        if(authorController.findById(book.author()) == null){ //preserving database fk integrity
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found, create author first.");
-        }
-        repository.save(book);
-    }
+	//finding by specific id
+	@GetMapping("/{id}")
+	public Book findById(@PathVariable Integer id){
+		return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Content not found"));
+	}
 
 
-    //example of a read operation (filter by title)
-    @GetMapping("/filter/{keyword}")
-    public List<Book> findByTitle(@PathVariable String keyword) {
-        return repository.findAllByTitleContains(keyword);
-    }
+	/* CRUD OPERATIONS HERE */
+	
+	@ResponseStatus(HttpStatus.CREATED)
+	@PostMapping("")
+	public void create(@Valid @RequestBody Book book) {
+		if(authorController.findById(book.author()) == null){ //preserving database fk integrity
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found, create author first.");
+		}
+		repository.save(book);
+	}
 
 
-    @ResponseStatus(HttpStatus.NO_CONTENT) //returning as a confirmation that no new book was created
-    @PutMapping("/{id}")
-    public void update(@RequestBody Book book, @PathVariable Integer id) {
-        if(!repository.existsById(id) || authorController.findById(book.author()) == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book/Author not found");
-        }
-        repository.save(book);
-    }
+	//example of a read operation (filter by title)
+	@GetMapping("/filter/{keyword}")
+	public List<Book> findByTitle(@PathVariable String keyword) {
+		return repository.findAllByTitleContains(keyword);
+	}
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
-        repository.deleteById(id);
-    }
 
-    
+	@ResponseStatus(HttpStatus.NO_CONTENT) //returning as a confirmation that no new book was created
+	@PutMapping("/{id}")
+	public void update(@RequestBody Book book, @PathVariable Integer id) {
+		if(!repository.existsById(id) || authorController.findById(book.author()) == null){
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book/Author not found");
+		}
+		repository.save(book);
+	}
+
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@DeleteMapping("/{id}")
+	public void delete(@PathVariable Integer id) {
+		repository.deleteById(id);
+	}
+
+	
 
 
 }
